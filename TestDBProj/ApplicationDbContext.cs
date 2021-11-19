@@ -14,7 +14,11 @@ namespace TestDBProj
     public class ApplicationDbContext : DbContext
     {
         // DBSets Go here
-        public DbSet<BostonBike> BostonBikes { get; set; }
+        public DbSet<BikeRackLocation> BikeRackLocations { get; set; }
+        public DbSet<Bike> Bikes { get; set; }
+        public DbSet<ModelType> BikeModelTypes { get; set; }
+        public DbSet<UserInformation> UsersInformation { get; set; } 
+        public DbSet<Bike_ModelType> Bike_ModelTypes { get; set; }
 
         public ApplicationDbContext(DbContextOptions dbCntextOptions) : base(dbCntextOptions) { }
 
@@ -22,7 +26,11 @@ namespace TestDBProj
         {
             base.OnModelCreating(builder);
             //builder sets here
-            builder.Entity<BostonBike>().ToTable("bostonbikes", "testdb");
+            builder.Entity<BikeRackLocation>().ToTable("bikeracklocation", "csc4402");
+            builder.Entity<Bike>().ToTable("bike", "csc4402");
+            builder.Entity<ModelType>().ToTable("modeltype", "csc4402");
+            builder.Entity<UserInformation>().ToTable("userinformation", "csc4402");
+            builder.Entity<Bike_ModelType>().ToTable("bike_modeltypes", "csc4402");
         }
 
         public override int SaveChanges()

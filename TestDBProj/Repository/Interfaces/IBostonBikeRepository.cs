@@ -6,7 +6,7 @@ using TestDBProj.Models;
 
 namespace TestDBProj.Repository.Interfaces
 {
-    interface IBostonBikeRepository : IModelRunRepository<BostonBike>
+    interface IBostonBikeRepository : IModelRunRepository<BikeRackLocation>
     {
     }
 }
