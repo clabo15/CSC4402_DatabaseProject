@@ -16,9 +16,11 @@ namespace TestDBProj
         // DBSets Go here
         public DbSet<BikeRackLocation> BikeRackLocations { get; set; }
         public DbSet<Bike> Bikes { get; set; }
-        public DbSet<ModelType> BikeModelTypes { get; set; }
+        public DbSet<ModelType> ModelTypes { get; set; }
         public DbSet<UserInformation> UsersInformation { get; set; } 
         public DbSet<Bike_ModelType> Bike_ModelTypes { get; set; }
+        public DbSet<Bike_UserInformation> Bike_UsersInformation { get; set; }
+        public DbSet<Bike_BikeRackLocation> Bike_BikeRackLocations { get; set; }
 
         public ApplicationDbContext(DbContextOptions dbCntextOptions) : base(dbCntextOptions) { }
 
@@ -31,6 +33,8 @@ namespace TestDBProj
             builder.Entity<ModelType>().ToTable("modeltype", "csc4402");
             builder.Entity<UserInformation>().ToTable("userinformation", "csc4402");
             builder.Entity<Bike_ModelType>().ToTable("bike_modeltypes", "csc4402");
+            builder.Entity<Bike_UserInformation>().ToTable("bike_userinformation", "csc4402");
+            builder.Entity<Bike_BikeRackLocation>().ToTable("bike_bikeracklocation", "csc4402");
         }
 
         public override int SaveChanges()

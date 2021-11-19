@@ -7,26 +7,26 @@ namespace TestDBProj.Dictionary
 {
     public class ModelTypeDictionary
     {
-        public static Dictionary<string, string> mappedTypes = new()
+        public static Dictionary<int, string> mappedTypes = new()
         {
             {
-                "359507190",
+                359507190,
                 "Alchemy Bicycles"
             },
             {
-                "078013745",
+                078013745,
                 "All-City Cycles"
             },
             {
-                "218215387",
+                218215387,
                 "Electra Bikes"
             },
             {
-                "690310342",
+                690310342,
                 "Fuji Bikes"
             },
             {
-                "494426590",
+                494426590,
                 "Pivot Bikes"
             }
         };

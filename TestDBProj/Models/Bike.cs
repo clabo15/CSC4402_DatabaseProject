@@ -10,6 +10,6 @@ namespace TestDBProj.Models
     [IgnoreFirst(1)]
     public class Bike : AuditableEntity
     {
-        public int? SerialNumber { get; set; }
+        public int SerialNumber { get; set; }
     }
 }

@@ -73,7 +73,7 @@ namespace TestDBProj.Repository.Database
                 await AddBikes(bikes);
                 _logger.LogInformation("--- Bikes.csv saves --- \n");
             }
-            if(!await _context.BikeModelTypes.AnyAsync())
+            if(!await _context.ModelTypes.AnyAsync())
             {
                 List<ModelType> bikeModels = ParseBikeTypeCSV();
                 await AddBikeTypes(bikeModels);
@@ -85,6 +85,18 @@ namespace TestDBProj.Repository.Database
                 List<UserInformation> userInformation = ParseUserInformationCSV();
                 await AddUserInformation(userInformation);
                 _logger.LogInformation("--- UserData.cs --- \n");
+            }
+            if (!await _context.Bike_ModelTypes.AnyAsync())
+            {
+                JoinBike_ModelType();
+            }
+            if (!await _context.Bike_UsersInformation.AnyAsync())
+            {
+                JoinBike_UserInformation();
+            }
+            if(!await _context.Bike_BikeRackLocations.AnyAsync())
+            {
+                JoinBike_BikeRackLocation();
             }
             await _context.SaveChangesAsync();
         }
@@ -99,7 +111,7 @@ namespace TestDBProj.Repository.Database
         }
         public async Task AddBikeTypes(List<ModelType> bikeModels)
         {
-            _context.BikeModelTypes.AddRange(bikeModels);
+            _context.ModelTypes.AddRange(bikeModels);
         }
         public async Task AddUserInformation(List<UserInformation> userInformations)
         {
@@ -137,10 +149,64 @@ namespace TestDBProj.Repository.Database
 
         public void JoinBike_ModelType()
         {
-            var bikeType = _context.BikeModelTypes.ToList();
-            var bike = _context.Bikes.ToList();
-            var joinBike_BikeTypes = _context.Bike_ModelTypes.ToList();
+            var bikeTypes = _context.ModelTypes.ToList();
+            var bikes = _context.Bikes.ToList();
+            foreach(var bike in bikes)
+            {
+                var mapToBikeName = ModelTypeDictionary.mappedTypes[bike.SerialNumber];
+                if(mapToBikeName != null)
+                {
+                    var bikeTypeEntity = bikeTypes.SingleOrDefault(bt => bt.Name.Trim().ToLower() == mapToBikeName.Trim().ToLower());
+                    if(bikeTypeEntity != null)
+                    {
+                        _context.Bike_ModelTypes.Add(new Bike_ModelType
+                        {
+                            BikeId = bike.Id,
+                            ModelTypeId = bikeTypeEntity.Id
+                        });
+                    }
+                }
+            }
             
+            
+        }
+
+        public void JoinBike_UserInformation()
+        {
+            var userInformation = _context.UsersInformation.ToList();
+            var bikes = _context.Bikes.ToList();
+            for(int index = 0; index < bikes.Count; index++)
+            {
+                _context.Bike_UsersInformation.Add(new Bike_UserInformation
+                {
+                    UserInformationId = userInformation[index].Id,
+                    BikeId = bikes[index].Id
+                });
+            }
+        }
+
+        public void JoinBike_BikeRackLocation()
+        {
+            var bikeRackLocation = _context.BikeRackLocations.ToList();
+            var bikes = _context.Bikes.ToList();
+            Random randomLocationIndex = new Random();
+            for(int index = 0; index < bikeRackLocation.Count; index++)
+            {
+                _context.Bike_BikeRackLocations.Add(new Bike_BikeRackLocation
+                {
+                    BikeRackLocationId = bikeRackLocation[index].Id,
+                    BikeId = bikes[index].Id
+                });
+                if(index > bikeRackLocation.Count)
+                {
+                    int randomIndex = randomLocationIndex.Next(0, bikeRackLocation.Count - 1);
+                    _context.Bike_BikeRackLocations.Add(new Bike_BikeRackLocation
+                    {
+                        BikeRackLocationId = bikeRackLocation[randomIndex].Id,
+                        BikeId = bikes[index].Id
+                    });
+                }
+            }
         }
     }
 }

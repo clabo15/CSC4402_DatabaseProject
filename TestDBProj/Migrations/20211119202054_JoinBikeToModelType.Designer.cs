@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TestDBProj;
@@ -9,9 +10,10 @@ using TestDBProj;
 namespace TestDBProj.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211119202054_JoinBikeToModelType")]
+    partial class JoinBikeToModelType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,41 +79,6 @@ namespace TestDBProj.Migrations
                     b.ToTable("bikeracklocation", "csc4402");
                 });
 
-            modelBuilder.Entity("TestDBProj.Models.Bike_BikeRackLocation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("BikeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("bike_id");
-
-                    b.Property<Guid>("BikeRackLocationId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("bike_rack_location_id");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_date");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_date");
-
-                    b.HasKey("Id")
-                        .HasName("pk_bike_bikeracklocation");
-
-                    b.HasIndex("BikeId")
-                        .HasDatabaseName("ix_bike_bikeracklocation_bike_id");
-
-                    b.HasIndex("BikeRackLocationId")
-                        .HasDatabaseName("ix_bike_bikeracklocation_bike_rack_location_id");
-
-                    b.ToTable("bike_bikeracklocation", "csc4402");
-                });
-
             modelBuilder.Entity("TestDBProj.Models.Bike_ModelType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -145,41 +112,6 @@ namespace TestDBProj.Migrations
                         .HasDatabaseName("ix_bike_modeltypes_model_type_id");
 
                     b.ToTable("bike_modeltypes", "csc4402");
-                });
-
-            modelBuilder.Entity("TestDBProj.Models.Bike_UserInformation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("BikeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("bike_id");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("created_date");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("updated_date");
-
-                    b.Property<Guid>("UserInformationId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("user_information_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_bike_userinformation");
-
-                    b.HasIndex("BikeId")
-                        .HasDatabaseName("ix_bike_userinformation_bike_id");
-
-                    b.HasIndex("UserInformationId")
-                        .HasDatabaseName("ix_bike_userinformation_user_information_id");
-
-                    b.ToTable("bike_userinformation", "csc4402");
                 });
 
             modelBuilder.Entity("TestDBProj.Models.ModelType", b =>
@@ -248,27 +180,6 @@ namespace TestDBProj.Migrations
                     b.ToTable("userinformation", "csc4402");
                 });
 
-            modelBuilder.Entity("TestDBProj.Models.Bike_BikeRackLocation", b =>
-                {
-                    b.HasOne("TestDBProj.Models.Bike", "Bike")
-                        .WithMany()
-                        .HasForeignKey("BikeId")
-                        .HasConstraintName("fk_bike_bikeracklocation_bike_bike_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TestDBProj.Models.BikeRackLocation", "BikeRackLocation")
-                        .WithMany()
-                        .HasForeignKey("BikeRackLocationId")
-                        .HasConstraintName("fk_bike_bikeracklocation_bikeracklocation_bike_rack_location_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bike");
-
-                    b.Navigation("BikeRackLocation");
-                });
-
             modelBuilder.Entity("TestDBProj.Models.Bike_ModelType", b =>
                 {
                     b.HasOne("TestDBProj.Models.Bike", "Bike")
@@ -288,27 +199,6 @@ namespace TestDBProj.Migrations
                     b.Navigation("Bike");
 
                     b.Navigation("ModelType");
-                });
-
-            modelBuilder.Entity("TestDBProj.Models.Bike_UserInformation", b =>
-                {
-                    b.HasOne("TestDBProj.Models.Bike", "Bike")
-                        .WithMany()
-                        .HasForeignKey("BikeId")
-                        .HasConstraintName("fk_bike_userinformation_bike_bike_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TestDBProj.Models.UserInformation", "UserInformation")
-                        .WithMany()
-                        .HasForeignKey("UserInformationId")
-                        .HasConstraintName("fk_bike_userinformation_userinformation_user_information_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bike");
-
-                    b.Navigation("UserInformation");
                 });
 #pragma warning restore 612, 618
         }
